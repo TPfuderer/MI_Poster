@@ -43,3 +43,42 @@ ggplot(data = data1)+
              col ="red", size = 4, shape = 8)+
   annotate(geom = "point", x = 0, y = 10, shape = 8, size = 4, col = "red") + 
   annotate(geom = "text", x = 0.2, y = 10, label = "missing observation", hjust = "left")
+
+pacman::p_load(miceranger)
+
+imp_mr <- miceRanger(
+  data = data1,
+  m = 5,              # number of imputations
+  maxiter = 5,        # iterations
+  seed = 123
+)
+
+data1_imp <- complete(imp_mr, 1)
+
+aft.Imp <- cbind(
+  mean = mean(data1_imp$X3),
+  var  = var(data1_imp$X3),
+  corX1_X3 = cor(data1_imp$X1, data1_imp$X3)
+)
+
+rbind(
+  Before = bef.Imp,
+  After  = aft.Imp
+)
+
+# Imputed values for X3 only
+imp_mr$imp$X3
+
+ggplot() +
+  geom_point(data = data1, aes(X1, X3), alpha = 0.5) +
+  geom_point(
+    data = data1_imp[misind, ],
+    aes(X1, X3),
+    color = "red",
+    size = 2
+  ) +
+  theme_bw()
+
+
+
+

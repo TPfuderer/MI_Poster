@@ -22,7 +22,7 @@ Why investigate properness? => predictions do not equal right inference. Can't d
 - Why properness? 
 - Why methods unproper? 
 
-#*4) DGP:**
+**4) DGP:**
 - MAR (Missing at Random)
 - Simulation 
 

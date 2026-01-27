@@ -24,6 +24,7 @@ Why investigate properness? => predictions do not equal right inference. Can't d
 **4) DGP:**
 - MAR (Missing at Random)
 - Simulation 
+- Show VIM missingness -> what we want to impute
 
 **5) Running Imputation**
 - Convergence 

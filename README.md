@@ -16,11 +16,22 @@ study.]
 
 **Secondary (optional): When to use which method?** 
 
-Create outline for showing properness in MC simulation study. 
+Create outline for showing properness in MC simulation study.
+
+Why investigate properness? => predictions do not equal right inference. Can't draw conclusions a out relationships from imputed data. 
 
 Methods: 
 - Mice: PMM, CART 
-- MiceRanger: Forest 
+- MiceRanger: Forest .
+
+Setup: 
+- Algorithms (especially Mice)
+- Differences (especially Miceranger)
+
+Theory: 
+- Why properness? 
+- Why methods unproper? 
+
 
 DGP: 
 - MAR (Missing at Random)
@@ -29,5 +40,12 @@ DGP:
 Diagnostics: (properness)
 - Between Chain Variance = B 
 - If B ~ 0 -> improper 
-- Coverage Rate 
+- Coverage Rate => If good coverage = good (95%) pooling (proper, if lower = Bad 
 - True Bias 
+- FoMi (Fraction of Missing) RF and CART often give low rates 
+
+Why?: 
+A multiple imputation method is proper (Rubin, 1987) if:
+After pooling, the MI estimator has the same repeated-sampling distribution as the estimator based on the observed-data posterior.
+
+Simulates the DGP! 

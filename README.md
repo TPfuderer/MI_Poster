@@ -5,7 +5,7 @@ investigate the ’properness’ of methods with diagnostics for multivariate mo
 
 **Secondary (optional): When to use which method?** 
 
-**Project Plan:**
+***Project Plan:***
 
 
 Why investigate properness? => predictions do not equal right inference. Can't draw conclusions a out relationships from imputed data. 

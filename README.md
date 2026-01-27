@@ -1,13 +1,11 @@
 
 **GOAL OF PAPER:**
 
-investigate the ’properness’ of methods with diagnostics for multivariate model parameters.**
-
-**Secondary (optional): When to use which method?** 
+investigate the ’properness’ of methods with diagnostics for multivariate model parameters
 
 # Project Plan:
 
-Why investigate properness? => predictions do not equal right inference. Can't draw conclusions about relationships from imputed data. 
+Why investigate properness? => Awnser: predictions do not equal right inference. Can't draw conclusions about relationships from imputed data. 
 
 **1) Methods:**
 - Mice: PMM, CART 
@@ -36,7 +34,9 @@ Why investigate properness? => predictions do not equal right inference. Can't d
 - B = Main Judge of Properness
 - B => variability across plausible completions of the missing data
 
-- Coverage Rate => If good coverage = good (95%) pooling (proper, if lower = Bad (indicator)
+---
+
+- Coverage Rate => If coverage = good (e.g. 95%) pooling is proper, if lower = Bad 
 - Coverage Rate is true advantage of sim study and knowing **θ** and true DGP 
 - Only way to confirm Rubins Rules 
 

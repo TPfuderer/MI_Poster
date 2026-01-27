@@ -10,29 +10,37 @@ investigate the ’properness’ of methods with diagnostics for multivariate mo
 
 Why investigate properness? => predictions do not equal right inference. Can't draw conclusions a out relationships from imputed data. 
 
-Methods: 
+1) Methods: 
 - Mice: PMM, CART 
 - MiceRanger: Forest .
 
-Setup: 
+2) Setup: 
 - Algorithms (especially Mice)
 - Differences (especially Miceranger)
 
-Theory: 
+3) Theory: 
 - Why properness? 
 - Why methods unproper? 
 
 
-DGP: 
+4) DGP: 
 - MAR (Missing at Random)
 - Simulation 
 
-Diagnostics: (properness)
+5) Running Imputation 
+- Convergence 
+- Model Checks 
+
+6) Diagnostics: (properness)
 - Between Chain Variance = B 
 - If B ~ 0 -> improper 
 - Coverage Rate => If good coverage = good (95%) pooling (proper, if lower = Bad 
 - True Bias 
 - FoMi (Fraction of Missing) RF and CART often give low rates 
+
+7) Conclusion:
+- Why focus on properness? 
+- When are CART and RF still better choices? 
 
 Why?: 
 A multiple imputation method is proper (Rubin, 1987) if:

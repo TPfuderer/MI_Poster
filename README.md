@@ -7,8 +7,7 @@ investigate the ’properness’ of methods with diagnostics for multivariate mo
 
 # Project Plan:
 
-
-Why investigate properness? => predictions do not equal right inference. Can't draw conclusions a out relationships from imputed data. 
+Why investigate properness? => predictions do not equal right inference. Can't draw conclusions about relationships from imputed data. 
 
 **1) Methods:**
 - Mice: PMM, CART 
@@ -33,7 +32,10 @@ Why investigate properness? => predictions do not equal right inference. Can't d
 **6) Diagnostics: (properness)**
 - Between Chain Variance = B 
 - If B ~ 0 -> improper 
-- Coverage Rate => If good coverage = good (95%) pooling (proper, if lower = Bad 
+- Coverage Rate => If good coverage = good (95%) pooling (proper, if lower = Bad (indicator)
+- B = Main Judge of Properness
+
+Secondary Importance: 
 - True Bias 
 - FoMi (Fraction of Missing) RF and CART often give low rates 
 

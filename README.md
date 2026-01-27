@@ -32,9 +32,12 @@ Why investigate properness? => predictions do not equal right inference. Can't d
 **6) Diagnostics: (properness)**
 - Between Chain Variance = B 
 - If B ~ 0 -> improper 
-- Coverage Rate => If good coverage = good (95%) pooling (proper, if lower = Bad (indicator)
 - B = Main Judge of Properness
 - B => variability across plausible completions of the missing data
+
+- Coverage Rate => If good coverage = good (95%) pooling (proper, if lower = Bad (indicator)
+- Coverage Rate is true advantage of sim study and knowing $theta$ and true DGP 
+- Only way to confirm Rubins Rules 
 
 Secondary Importance: 
 - True Bias 

@@ -18,6 +18,9 @@ study.]
 
 Create outline for showing properness in MC simulation study.
 
+**Project Plan:**
+
+
 Why investigate properness? => predictions do not equal right inference. Can't draw conclusions a out relationships from imputed data. 
 
 Methods: 

@@ -36,7 +36,7 @@ Why investigate properness? => predictions do not equal right inference. Can't d
 - B => variability across plausible completions of the missing data
 
 - Coverage Rate => If good coverage = good (95%) pooling (proper, if lower = Bad (indicator)
-- Coverage Rate is true advantage of sim study and knowing $theta$ and true DGP 
+- Coverage Rate is true advantage of sim study and knowing **θ** and true DGP 
 - Only way to confirm Rubins Rules 
 
 Secondary Importance: 

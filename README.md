@@ -40,7 +40,7 @@ After pooling, the MI estimator has the same repeated-sampling distribution as t
 
 Simulates the DGP! 
 
-**Question:**
+# Question:
 
 Tree-based Multiple Imputation methods:
 MI methods based on machine learning algorithms (see e.g. Burgette &

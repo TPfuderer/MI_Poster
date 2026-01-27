@@ -17,3 +17,12 @@ study.]
 **Secondary (optional): When to use which method?** 
 
 Create outline for showing properness in MC simulation study. 
+
+Methods: 
+
+Mice: PMM, CART 
+MiceRanger: Forest 
+
+Diagnostics: (properness)
+Between Chain Variance = B 
+- If B ~ 0 -> improper 

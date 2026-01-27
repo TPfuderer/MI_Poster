@@ -19,10 +19,15 @@ study.]
 Create outline for showing properness in MC simulation study. 
 
 Methods: 
+- Mice: PMM, CART 
+- MiceRanger: Forest 
 
-Mice: PMM, CART 
-MiceRanger: Forest 
+DGP: 
+- MAR (Missing at Random)
+- Simulation 
 
 Diagnostics: (properness)
-Between Chain Variance = B 
+- Between Chain Variance = B 
 - If B ~ 0 -> improper 
+- Coverage Rate 
+- True Bias 

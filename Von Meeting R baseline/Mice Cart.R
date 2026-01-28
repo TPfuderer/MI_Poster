@@ -15,8 +15,8 @@ meth_cart[c("wages", "education")] <- "cart"
 # --- run MICE ---
 Imp_CART <- mice(
   SLID,
-  m = 3,
-  maxit = 2,
+  m = 10,
+  maxit = 20,
   method = meth_cart,
   printFlag = FALSE
 )
@@ -39,3 +39,10 @@ summary(pooled_cart)
 # --- diagnostics ---
 plot(Imp_CART)
 densityplot(Imp_CART)
+
+#Between imputation variance B
+pooled_cart <- mice::pool(fit_cart)
+
+B_cart <- pooled_cart$pooled$b
+B_cart
+

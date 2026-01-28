@@ -25,9 +25,10 @@ summary(SLID)
 # ------------------------------------------------------------
 ImpMice <- mice(
   SLID,
-  m = 15,        # number of imputations
-  maxit = 30     # number of MCMC iterations
-)
+  m = 10,       # number of imputations
+  maxit = 20,   # number of MCMC iterations
+  method = "pmm"
+  )
 
 # ------------------------------------------------------------
 # 3) Inspect imputed values
@@ -58,3 +59,22 @@ summary(pooledRes)
 # ------------------------------------------------------------
 plot(ImpMice)          # convergence plots
 densityplot(ImpMice)  # observed vs imputed distributions
+
+# ------------------------------------------------------------
+# 8.) Multivariate Diagnostics
+# ------------------------------------------------------------
+# --- Between-imputation variance B for PMM ---
+B_pmm <- pooledRes$pooled$b
+B_pmm
+
+
+# ALL Model comparison of B
+# Combine B values into a single data frame
+B_compare <- tibble(
+  coefficient = names(B_pmm),
+  B_PMM  = as.numeric(B_pmm),
+  B_CART = as.numeric(B_cart),
+  B_RF   = as.numeric(B_rf)
+)
+
+B_compare

@@ -13,8 +13,8 @@ set.seed(123)
 # ------------------------------------------------------------
 Imp_RF <- miceRanger(
   SLID,
-  m = 3,
-  maxit = 2,
+  m = 10,
+  maxit = 20,
   verbose = FALSE
 )
 
@@ -57,3 +57,36 @@ plotDistributions(
   vars = c("wages", "education")
 )
 
+# 1) Convergence / chain-style plot
+plotVarConvergence(
+  Imp_RF,
+  vars = c("wages", "education")
+)
+
+# 2) Imputed vs observed distributions
+plotDistributions(
+  Imp_RF,
+  vars = c("wages", "education")
+)
+
+# 3) Imputation uncertainty
+plotImputationVariance(
+  Imp_RF,
+  vars = c("wages", "education")
+)
+
+# 4) Optional: RF fit quality
+plotModelError(Imp_RF)
+
+
+# Checking between chain
+# --- miceRanger fits ---
+class(fit_list) <- "mira"
+pooled_rf <- mice::pool(fit_list)
+
+# Get Rubin components (W, B, T)
+summ_rf <- summary(pooled_rf)
+
+# B: between-imputation variance per coefficient
+B_rf <- pooled_rf$pooled$b
+B_rf

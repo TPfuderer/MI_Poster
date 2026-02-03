@@ -14,8 +14,8 @@ meth_rf[c("wages", "education")] <- "rf"
 # --- run MICE with Random Forest ---
 Imp_RF <- mice(
   SLID,
-  m = 3,
-  maxit = 2,
+  m = 4,
+  maxit = 15,
   method = meth_rf,
   printFlag = FALSE
 )

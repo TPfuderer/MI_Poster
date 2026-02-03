@@ -1,0 +1,158 @@
+set.seed(123)
+
+# number of simulation cycles
+R <- 500
+
+# store the results (rel. bias and coverage) in a matrix for each method
+resBD <- matrix(nrow = R, ncol = 4)
+colnames(resBD) <- c("relBias_mean", "Coverage_mean", 
+                     "relBias_quant","Coverage_quant")
+
+resMInorm <- resMIpmm <- resMImidas <- resMIcart <- resMIrf <- resBD
+# -> we get for each method a matrix with R iterations as rows and for each
+#    iteration we have the rel. bias and coverage for the mean of y as columns
+head(resBD)
+
+# number of multiple imputations
+M <- 10
+
+# number of iterations for the chained equations (see mice ALGO: t = 1, ...,T)
+niter <- 1
+
+# sample size
+n <- 2000
+
+## functions for diagnostics
+
+coverage <- function(true.value, CI.low, CI.up){
+  ifelse(test = CI.low <= true.value && CI.up >= true.value, yes = 1, no = 0)
+}
+
+rel.bias <- function(true.value, est) {
+  rel_bias <- (est - true.value) / true.value
+  return(rel_bias)
+}
+
+## function for Rubin's combining rules, gives pooled estimates, CI
+
+MI_analysis <- function(Q.hat,U.hat,m){
+  
+  if (class(Q.hat)!="numeric") {
+    stop("Estimator vector for all imputations has a different class")
+  }
+  else{
+    # pooled estimator
+    Q_bar <- sum(Q.hat)/m
+    # within-variance
+    U_bar <- sum(U.hat)/m
+    # between-variance
+    B <- (1/(m-1))*sum((Q.hat-Q_bar)^2)
+  }
+  
+  # total variance
+  Tot <- U_bar+B+B/m
+  # degrees of freedom
+  df <- (m-1)*(1+(m/(m+1))*U_bar/B)^2
+  
+  # confidence intervals
+  CIlow <- Q_bar-qt(0.975,df)*sqrt(Tot)
+  CIup <- Q_bar+qt(0.975,df)*sqrt(Tot)
+  r <- (B+B/m)/U_bar
+  
+  # fraction of missing information
+  FMI <- (r+2/(df+3))/(1+r)
+  
+  # t-test
+  t_value <- Q_bar/sqrt(Tot)
+  
+  # p-value
+  p.value <-2*(1-pt(abs(t_value),df))
+  
+  return(cbind(Q_bar,CIlow,CIup))
+}
+
+quantVar <- function(y, p = 0.9){
+  quant <- quantile(y, prob = p)
+  sigma <- (p*(1-p))/(dens_y(quant)^2)
+  return(sigma)
+}
+
+pacman::p_load(missMethods)
+delete_MAR_1_to_x
+
+
+for(r in 1:R) {
+  
+  ### Data generation
+    
+  # one normally and one uniformly distributed variable
+  x1 <- rpois(n, 4)
+  x2 <- rnorm(n, 0, 1)
+
+  y1 <- 15 + 0.3*x1 + 3*x2 + 0.1*x1*x1*x2 + rnorm(n,3)
+  
+  data <- as.data.frame(cbind(x1, x2, y))
+  data_bd <- data 
+
+  ### Before deletion
+  
+  # mean
+  mean_est <- mean(data_bd$y)
+  emp_sd <- sd(data_bd$y)
+  
+  ci_up <- mean_est + (qnorm(p = 0.975)*emp_sd)/sqrt(length(data_bd$y))
+  ci_low <- mean_est - (qnorm(p = 0.975)*emp_sd)/sqrt(length(data_bd$y))
+  
+  # quantile 
+  quant_est <- quantile(data_bd$y, probs = 0.9)
+  quant_sd <- sqrt(quantVar(y =data_bd$y, p = 0.9)) 
+  
+  ci_up_quant <- quant_est + (qnorm(p = 0.975)*quant_sd)/sqrt(length(data_bd$y))
+  ci_low_quant <- quant_est - (qnorm(p = 0.975)*quant_sd)/sqrt(length(data_bd$y))
+    
+  
+  resBD[r,] <- c(rel.bias(true_mean, mean_est),
+                 coverage(true_mean, ci_low, ci_up),
+                 rel.bias(quant_est, true_quant),
+                 coverage(true_quant, ci_low_quant, ci_up_quant))
+  
+
+
+  
+  
+x1 <- rpois(n, 4)
+x2 <- runif(n, 0, 3)
+y1 <- 3 + 0.3*x1 + 3*x2 + 0.7*x1*x1*x2 + 2 * log(1+x2**2) + rnorm(n,3)
+  
+
+lin_y <- (x1 + x2)
+
+schranken <- quantile(lin_y, probs = c(0.15, 0.85), na.rm = TRUE)
+
+  test <- data.frame(lin_y)
+ggplot(test, aes(lin_y))+
+  geom_histogram()
+
+  
+prob_y <- pnorm(lin_y)    
+res_y <- rbinom(n = n, size = 1, prob = prob_y) 
+data <- as.data.frame(cbind(x1, x2, y1))
+data$y1[which(res_y==0)] <- NA
+sum(is.na(data$y1))
+NROW(data)
+
+
+  
+  
+  pacman::p_load(rgl)
+
+plot3d(
+  x1, x2, y1,
+  xlab = "x1",
+  ylab = "x2",
+  zlab = "y1",
+  type = "s",
+  size = 0.8
+)
+
+  

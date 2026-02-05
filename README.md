@@ -18,6 +18,7 @@ Why investigate properness? => Awnser: predictions do not equal right inference.
 **3) Theory:**
 - Why properness? 
 - Why methods unproper? 
+- Why Monte Carlo: Find stable distribution to mimic true DGP, by changing parameters 
 
 **4) DGP:**
 - MAR (Missing at Random)

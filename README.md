@@ -34,6 +34,8 @@ Why investigate properness? => Awnser: predictions do not equal right inference.
 - If B ~ 0 -> improper 
 - B = Main Judge of Properness
 - B => variability across plausible completions of the missing data
+- Does Total Variance in Full Dataset match Total Variance in Imputed? 
+- Can we infer what is happening in real dog based on Imputed datasets 
 
 ---
 

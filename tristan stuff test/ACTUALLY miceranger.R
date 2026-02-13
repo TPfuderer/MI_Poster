@@ -62,10 +62,15 @@ imputed_vars
 
 # Internal miceRanger diagnostic plots
 # (imputed vs observed distributions, variable-wise)
-plotDistributions(
-  miceObj = Imp_RF,
-  vars = c("Y", paste0("X", 1:8))
-)
+library(gridExtra)
+
+p1 <- plotDistributions(Imp_store[[1]], vars = "Y")
+p2 <- plotDistributions(Imp_store[[2]], vars = "Y")
+p3 <- plotDistributions(Imp_store[[3]], vars = "Y")
+p4 <- plotDistributions(Imp_store[[4]], vars = "Y")
+
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+
 
 # 1) Convergence / chain-style plot
 plotVarConvergence(

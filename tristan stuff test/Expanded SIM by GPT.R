@@ -1,6 +1,27 @@
 # ============================================================
 # BURGETTE & REITER STYLE SIMULATION (PROPERNESS)
 # ============================================================
+#### Load previous 
+sim_results <- readRDS(
+  "C:/Users/pfudi/PycharmProjects/MI_Poster/tristan stuff test/burgette_sim_2026-02-13.rds"
+)
+
+
+coef_mat <- sim_results$coef_mat
+se_mat   <- sim_results$se_mat
+Imp_store <- sim_results$Imp_store
+##################
+
+################## 
+## Crash save 
+#latest <- tail(sort(list.files(pattern="checkpoint_run_.*\\.rds$")),1)
+#chk <- readRDS(latest)
+
+#coef_store <- chk$coef_store
+#se_store   <- chk$se_store
+#start_run  <- chk$last_run + 1
+###################
+
 
 pacman::p_load(miceRanger, tidyverse, MASS, mice)
 
@@ -35,6 +56,9 @@ logit_p <- function(z) 1/(1+exp(-z))
 coef_store <- list()
 se_store   <- list()
 Imp_store  <- vector("list",4)
+rmse_store <- vector("list", R)
+cor_store  <- numeric(R)
+
 
 form_true <- Y ~ X1 + X2 + X3 + X8 + X9 +
   I(X3^2) + X1:X2 + X8:X9
@@ -89,6 +113,35 @@ for(r in 1:R){
   if(r <= 4) Imp_store[[r]] <- Imp_RF
   
   imputed_list <- completeData(Imp_RF)
+  # ---------------------------------
+  # EXTRA ML DIAGNOSTICS
+  # ---------------------------------
+  ######## ADDD IIINNN LOOOOPPP
+  # Use first imputed dataset for ML evaluation
+  imp1 <- imputed_list[[1]]
+  
+  # Store true full data before missingness
+  true_full <- full_df
+  
+  # Identify missing cells
+  miss_mask <- is.na(miss_df)
+  
+  # 1️⃣ RMSE for missing entries only
+  rmse_vals <- sapply(colnames(miss_df), function(v) {
+    idx <- which(miss_mask[, v])
+    if(length(idx) == 0) return(NA)
+    sqrt(mean((imp1[idx, v] - true_full[idx, v])^2))
+  })
+  
+  # 2️⃣ Correlation matrix recovery (Frobenius norm)
+  cor_true <- cor(true_full)
+  cor_imp  <- cor(imp1)
+  
+  cor_error <- sqrt(sum((cor_true - cor_imp)^2))
+  
+  # Store
+  rmse_store[[r]] <- rmse_vals
+  cor_store[r]    <- cor_error
   
   # ------------------------------------------------------------
   # 4) Correct nonlinear analysis model
@@ -103,7 +156,40 @@ for(r in 1:R){
   
   coef_store[[r]] <- pooled_table$estimate
   se_store[[r]]   <- sqrt(pooled_table$t)
+  
+  # ---- CHECKPOINT SAVE EVERY 5 RUNS ----
+  if (r %% 5 == 0) {
+    
+    sim_checkpoint <- list(
+      coef_store = coef_store,
+      se_store   = se_store,
+      last_run   = r
+    )
+    
+    file_name <- paste0("checkpoint_run_", r, ".rds")
+    saveRDS(sim_checkpoint, file_name)
+    
+    saveRDS(sim_checkpoint, "checkpoint_latest_backup.rds")
+    
+    files <- sort(list.files(pattern = "checkpoint_run_.*\\.rds$"))
+    
+    if (length(files) > 2) {
+      file.remove(files[1])
+    }
+    
+    cat("Checkpoint saved at run", r, "\n")
+  }
 }
+
+## Save ## manual
+sim_results <- list(
+  coef_mat = do.call(rbind, coef_store),
+  se_mat   = do.call(rbind, se_store),
+  Imp_store = Imp_store
+)
+
+saveRDS(sim_results, paste0("burgette_sim_", Sys.Date(), ".rds"))
+##
 
 # ============================================================
 # EVALUATION
@@ -149,11 +235,11 @@ coverage
 
 vars_diag <- "Y"
 
-par(mfrow=c(2,2))
+par(mfrow = c(2,2))
 for(i in 1:4){
-  plotDistributions(Imp_store[[i]], vars = vars_diag)
-  mtext(paste("Run",i),3,1)
+  plotDistributions(Imp_store[[i]], vars = "Y")
 }
+
 
 par(mfrow=c(2,2))
 for(i in 1:4){
@@ -174,4 +260,14 @@ for (i in 1:4) {
   plotModelError(Imp_store[[i]])
   mtext(paste0("Run ", i, " — plotModelError"), side = 3, line = 1, cex = 0.9)
 }
+
+# Convert RMSE list to matrix
+rmse_mat <- do.call(rbind, rmse_store)
+
+mean_rmse <- colMeans(rmse_mat, na.rm = TRUE)
+mean_cor_error <- mean(cor_store)
+
+mean_rmse
+mean_cor_error
+
 

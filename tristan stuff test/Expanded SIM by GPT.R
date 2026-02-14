@@ -2,14 +2,14 @@
 # BURGETTE & REITER STYLE SIMULATION (PROPERNESS)
 # ============================================================
 #### Load previous 
-sim_results <- readRDS(
-  "C:/Users/pfudi/PycharmProjects/MI_Poster/tristan stuff test/burgette_sim_2026-02-13.rds"
-)
+#sim_results <- readRDS(
+  #"C:/Users/pfudi/PycharmProjects/MI_Poster/tristan stuff test/burgette_sim_2026-02-13.rds"
+#)
 
 
-coef_mat <- sim_results$coef_mat
-se_mat   <- sim_results$se_mat
-Imp_store <- sim_results$Imp_store
+#coef_mat <- sim_results$coef_mat
+#se_mat   <- sim_results$se_mat
+#Imp_store <- sim_results$Imp_store
 ##################
 
 ################## 
@@ -32,7 +32,7 @@ set.seed(123)
 # -----------------------------
 n  <- 1000
 p  <- 10
-R  <- 100
+R  <- 15
 m_val <- 20
 
 beta <- c(
@@ -62,6 +62,7 @@ cor_store  <- numeric(R)
 
 form_true <- Y ~ X1 + X2 + X3 + X8 + X9 +
   I(X3^2) + X1:X2 + X8:X9
+options(ranger.num.threads = 4)
 
 for(r in 1:R){
   
@@ -128,10 +129,13 @@ for(r in 1:R){
   
   # 1️⃣ RMSE for missing entries only
   rmse_vals <- sapply(colnames(miss_df), function(v) {
-    idx <- which(miss_mask[, v])
-    if(length(idx) == 0) return(NA)
-    sqrt(mean((imp1[idx, v] - true_full[idx, v])^2))
+    idx <- which(is.na(miss_df[[v]]))
+    if(length(idx) == 0) return(NA_real_)
+    sqrt(mean(
+      (imp1[[v]][idx] - true_full[[v]][idx])^2
+    ))
   })
+  
   
   # 2️⃣ Correlation matrix recovery (Frobenius norm)
   cor_true <- cor(true_full)
@@ -180,16 +184,6 @@ for(r in 1:R){
     cat("Checkpoint saved at run", r, "\n")
   }
 }
-
-## Save ## manual
-sim_results <- list(
-  coef_mat = do.call(rbind, coef_store),
-  se_mat   = do.call(rbind, se_store),
-  Imp_store = Imp_store
-)
-
-saveRDS(sim_results, paste0("burgette_sim_", Sys.Date(), ".rds"))
-##
 
 # ============================================================
 # EVALUATION
@@ -260,7 +254,7 @@ for (i in 1:4) {
   plotModelError(Imp_store[[i]])
   mtext(paste0("Run ", i, " — plotModelError"), side = 3, line = 1, cex = 0.9)
 }
-
+##################################
 # Convert RMSE list to matrix
 rmse_mat <- do.call(rbind, rmse_store)
 
@@ -269,5 +263,139 @@ mean_cor_error <- mean(cor_store)
 
 mean_rmse
 mean_cor_error
+
+bias_df <- data.frame(
+  Parameter = names(bias),
+  Bias = as.numeric(bias)
+)
+
+library(ggplot2)
+
+ggplot(bias_df, aes(x = reorder(Parameter, Bias), y = Bias)) +
+  geom_col() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Bias of MI Estimators",
+       y = "Bias",
+       x = "")
+
+cov_df <- data.frame(
+  Parameter = names(coverage),
+  Coverage = as.numeric(coverage)
+)
+
+ggplot(cov_df, aes(x = reorder(Parameter, Coverage), y = Coverage)) +
+  geom_col() +
+  geom_hline(yintercept = 0.95, linetype = "dashed", color = "red") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "95% CI Coverage",
+       y = "Coverage",
+       x = "")
+var_df <- data.frame(
+  Parameter = names(emp_var),
+  Empirical = emp_var,
+  Rubin = mean_rubin_var
+)
+
+var_long <- tidyr::pivot_longer(
+  var_df,
+  cols = c("Empirical", "Rubin"),
+  names_to = "Type",
+  values_to = "Variance"
+)
+
+ggplot(var_long, aes(x = Parameter, y = Variance, fill = Type)) +
+  geom_col(position = "dodge") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Empirical vs Rubin Variance")
+coef_df <- as.data.frame(coef_mat)
+coef_df$Simulation <- 1:nrow(coef_df)
+
+coef_long <- tidyr::pivot_longer(
+  coef_df,
+  cols = -Simulation,
+  names_to = "Parameter",
+  values_to = "Estimate"
+)
+
+ggplot(coef_long, aes(x = Parameter, y = Estimate)) +
+  geom_boxplot() +
+  geom_point(data = data.frame(
+    Parameter = names(true_beta),
+    True = true_beta
+  ),
+  aes(x = Parameter, y = True),
+  color = "red",
+  size = 3) +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Distribution of Estimates Across Simulations")
+
+# ============================================================
+# FINAL SAVE – FULL REPRODUCIBLE SIMULATION STATE
+# ============================================================
+
+true_beta <- c(
+  "(Intercept)" = beta["b0"],
+  "X1" = beta["b1"],
+  "X2" = beta["b2"],
+  "X3" = beta["b3"],
+  "X8" = beta["b4"],
+  "X9" = beta["b5"],
+  "I(X3^2)" = beta["b6"],
+  "X1:X2" = beta["b7"],
+  "X8:X9" = beta["b8"]
+)
+
+final_results <- list(
+  
+  # Core results
+  coef_mat        = coef_mat,
+  se_mat          = se_mat,
+  bias            = bias,
+  emp_var         = emp_var,
+  mean_rubin_var  = mean_rubin_var,
+  coverage        = coverage,
+  
+  # ML diagnostics
+  rmse_store      = rmse_store,
+  cor_store       = cor_store,
+  mean_rmse       = mean_rmse,
+  mean_cor_error  = mean_cor_error,
+  
+  # First 4 imputation objects for diagnostics
+  Imp_store       = Imp_store,
+  
+  # DGP info
+  beta            = beta,
+  true_beta       = true_beta,
+  Sigma           = Sigma,
+  form_true       = deparse(form_true),
+  
+  # Simulation settings
+  R               = R,
+  m_val           = m_val,
+  n               = n,
+  p               = p,
+  
+  # Missingness mechanism
+  missing_mechanism = "MAR: logit(0.5*X9 - 0.5*X10)",
+  
+  # Reproducibility
+  seed            = 123,
+  RNGkind         = RNGkind(),
+  sessionInfo     = sessionInfo(),
+  date            = Sys.time()
+)
+
+saveRDS(
+  final_results,
+  paste0("burgette_full_sim_", Sys.Date(), ".rds")
+)
+
+cat("Full reproducible simulation saved.\n")
 
 

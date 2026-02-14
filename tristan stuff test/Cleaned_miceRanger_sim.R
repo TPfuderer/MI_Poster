@@ -504,3 +504,36 @@ ggplot(ci_df, aes(x = reorder(Parameter, Mean_CI_Length),
   labs(title = "Average 95% CI Length",
        subtitle = "Detects over/under confidence")
 
+# EXTRAS:
+library(tidyverse)
+
+plot_missing_vs_driver <- function(miss_df, driver = "X9", v = "Y", bins = 20) {
+  df <- miss_df %>%
+    transmute(
+      driver = .data[[driver]],
+      miss   = as.integer(is.na(.data[[v]]))
+    ) %>%
+    mutate(bin = ntile(driver, bins)) %>%
+    group_by(bin) %>%
+    summarise(
+      driver_mean = mean(driver, na.rm = TRUE),
+      miss_rate   = mean(miss),
+      n           = n(),
+      .groups = "drop"
+    )
+  
+  ggplot(df, aes(driver_mean, miss_rate)) +
+    geom_point() +
+    geom_line() +
+    labs(
+      title = paste0("Missing rate of ", v, " vs ", driver),
+      x = paste0(driver, " (binned mean)"),
+      y = paste0("P(", v, " is missing)")
+    ) +
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1))
+}
+
+# Examples:
+plot_missing_vs_driver(miss_df, driver="X9",  v="Y")
+plot_missing_vs_driver(miss_df, driver="X10", v="Y")
+

@@ -22,7 +22,6 @@
 #start_run  <- chk$last_run + 1
 ###################
 
-
 pacman::p_load(miceRanger, tidyverse, MASS, mice)
 
 set.seed(123)
@@ -334,68 +333,51 @@ ggplot(coef_long, aes(x = Parameter, y = Estimate)) +
   theme_minimal() +
   labs(title = "Distribution of Estimates Across Simulations")
 
-# ============================================================
-# FINAL SAVE – FULL REPRODUCIBLE SIMULATION STATE
-# ============================================================
-
-true_beta <- c(
-  "(Intercept)" = beta["b0"],
-  "X1" = beta["b1"],
-  "X2" = beta["b2"],
-  "X3" = beta["b3"],
-  "X8" = beta["b4"],
-  "X9" = beta["b5"],
-  "I(X3^2)" = beta["b6"],
-  "X1:X2" = beta["b7"],
-  "X8:X9" = beta["b8"]
-)
+# # ============================================================
+# # FINAL SAVE – FULL REPRODUCIBLE SIMULATION STATE
+# # (only save you need)
+# # ============================================================
+diag_runs <- seq_along(Imp_store)
 
 final_results <- list(
-  
-  # Core results
+  # results
   coef_mat        = coef_mat,
   se_mat          = se_mat,
   bias            = bias,
   emp_var         = emp_var,
   mean_rubin_var  = mean_rubin_var,
   coverage        = coverage,
-  
+
   # ML diagnostics
   rmse_store      = rmse_store,
   cor_store       = cor_store,
   mean_rmse       = mean_rmse,
   mean_cor_error  = mean_cor_error,
-  
-  # First 4 imputation objects for diagnostics
+
+  # stored imputation objects for diagnostics
+  diag_runs       = diag_runs,
   Imp_store       = Imp_store,
-  
-  # DGP info
+
+  # DGP/meta
   beta            = beta,
   true_beta       = true_beta,
   Sigma           = Sigma,
   form_true       = deparse(form_true),
-  
-  # Simulation settings
-  R               = R,
-  m_val           = m_val,
   n               = n,
   p               = p,
-  
-  # Missingness mechanism
+  R               = R,
+  m_val           = m_val,
   missing_mechanism = "MAR: logit(0.5*X9 - 0.5*X10)",
-  
-  # Reproducibility
+
+  # reproducibility
   seed            = 123,
   RNGkind         = RNGkind(),
   sessionInfo     = sessionInfo(),
   date            = Sys.time()
 )
 
-saveRDS(
-  final_results,
-  paste0("burgette_full_sim_", Sys.Date(), ".rds")
-)
+saveRDS(final_results, paste0("burgette_full_sim_", Sys.Date(), ".rds"))
+cat("Saved: burgette_full_sim_", Sys.Date(), ".rds\n", sep = "")
 
-cat("Full reproducible simulation saved.\n")
 
 

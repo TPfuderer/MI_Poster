@@ -78,7 +78,7 @@ for (v in vars_with_missing) {
   miss_indicator <- rbinom(n, 1, p_miss)
   analysis_dataset[miss_indicator == 1, v] <- NA
 }
-
+rbin
 # Unter 25% Komplette Zeilen
 # ca 17% Missingness pro Variable
 

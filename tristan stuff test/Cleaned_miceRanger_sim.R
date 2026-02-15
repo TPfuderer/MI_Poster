@@ -537,3 +537,48 @@ plot_missing_vs_driver <- function(miss_df, driver = "X9", v = "Y", bins = 20) {
 plot_missing_vs_driver(miss_df, driver="X9",  v="Y")
 plot_missing_vs_driver(miss_df, driver="X10", v="Y")
 
+#### Extra Extra
+plot_missing_per_variable <- function(miss_df, bins = 20) {
+  
+  vars_missing <- c("Y", paste0("X", 1:8))
+  
+  df_long <- miss_df %>%
+    dplyr::select(all_of(vars_missing), X9, X10) %>%
+    pivot_longer(
+      cols = all_of(vars_missing),
+      names_to = "variable",
+      values_to = "value_missing"
+    ) %>%
+    mutate(miss = as.integer(is.na(value_missing))) %>%
+    pivot_longer(
+      cols = c(X9, X10),
+      names_to = "driver",
+      values_to = "driver_value"
+    ) %>%
+    group_by(variable, driver,
+             bin = ntile(driver_value, bins)) %>%
+    summarise(
+      driver_mean = mean(driver_value),
+      miss_rate   = 100 * mean(miss),
+      .groups = "drop"
+    )
+  
+  ggplot(df_long, aes(driver_mean, miss_rate, color = driver)) +
+    geom_point(alpha = 0.6) +
+    geom_smooth(se = FALSE) +
+    facet_wrap(~ variable, scales = "free_y") +
+    labs(
+      title = "Missingness per Variable vs Drivers",
+      x = "Driver value",
+      y = "Probability of missing (%)",
+      color = "Driver"
+    ) +
+    scale_y_continuous(limits = c(0,100))
+}
+
+plot_missing_per_variable(miss_df)
+
+
+
+
+

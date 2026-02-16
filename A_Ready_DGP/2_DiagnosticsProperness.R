@@ -5,7 +5,7 @@
 
 #############
 #Load
-burgette_results <- readRDS("FirstRealTestn20.rds")
+burgette_results <- readRDS("C:/Users/pfudi/PycharmProjects/MI_Poster/tristan stuff test/RDS_n=100.rds")
 
 results         <- burgette_results$results
 summary_results <- burgette_results$summary_results
@@ -16,7 +16,7 @@ full_store      <- burgette_results$full_store
 miss_store      <- burgette_results$miss_store
 
 # ============================================================
-# RECOVER DATA FOR HTML / EXTRA ANALYSIS
+# RECOVER DATA FOR SINGLE simrun analysis
 # ============================================================
 
 r <- 1                      # choose simulation
@@ -147,26 +147,55 @@ print(p_cov)
 # 2️⃣ VARIANCE CHECK (T / Empirical)
 # ==========================================================
 
-cat("\nVARIANCE CHECK (Rubin T vs Empirical)\n")
-cat("Good: T/EmpVar ≈ 1 | <1 underestimation | >1 overestimation\n\n")
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(gridExtra)
 
+# Rename for clarity
 var_df <- plot_df %>%
-  select(Method, Parameter, EmpVar, RubinVar) %>%
-  pivot_longer(cols=c(EmpVar,RubinVar),
-               names_to="Type",
-               values_to="Variance")
-
+  dplyr::select(Method, Parameter, EmpVar, RubinVar) %>%
+  pivot_longer(cols = c(EmpVar, RubinVar),
+               names_to = "Type",
+               values_to = "Variance") %>%
+  mutate(Type = recode(Type,
+                       EmpVar = "Empirical Variance\n(Var of pooled theta across runs)",
+                       RubinVar = "Rubin Total Variance\n(Average T = W + (1+1/M)B)"))
+max_var <- max(var_df$Variance, na.rm = TRUE)
 p_var <- ggplot(var_df,
-                aes(x=Parameter,
-                    y=Variance,
-                    fill=Type)) +
-  geom_bar(stat="identity",
-           position=position_dodge()) +
-  facet_wrap(~Method) +
-  theme_minimal() +
-  labs(title="Empirical vs Rubin Variance")
+                aes(x = Parameter,
+                    y = Variance,
+                    fill = Type)) +
+  geom_col(position = position_dodge(width = 0.8)) +
+  facet_wrap(~ Method) +                     # ← fixed scale
+  scale_y_continuous(limits = c(0, max_var * 1.05)) +  # ← same limits
+  theme_minimal(base_size = 13) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
+        legend.position = "bottom") +
+  labs(title = "Empirical Variance vs Rubin Total Variance",
+       x = "Parameter",
+       y = "Variance",
+       fill = "")
 
-print(p_var)
+
+p_ratio <- ggplot(ratio_df,
+                  aes(x = Parameter,
+                      y = Ratio,
+                      fill = Calibration)) +
+  geom_col() +
+  geom_hline(yintercept = 1,
+             linetype = "dashed",
+             linewidth = 1) +
+  facet_wrap(~ Method) +
+  theme_minimal(base_size = 13) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+  labs(title = "Variance Calibration (Rubin / Empirical)",
+       x = "Parameter",
+       y = "T / Empirical Variance") +
+  theme(legend.position = "bottom")
+
+grid.arrange(p_var, p_ratio, ncol = 2)
+
 
 # ==========================================================
 # 3️⃣ BIAS CHECK

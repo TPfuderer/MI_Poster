@@ -13,7 +13,7 @@ missing_mech <- "MAR"   # "MAR" or "MCAR"
 # -----------------------------
 n     <- 1000
 p     <- 10
-R     <- 20
+R     <- 10
 m_val <- 10
 
 beta <- c(
@@ -428,6 +428,6 @@ final_results <- list(
   date            = Sys.time()
 )
 
-saveRDS(final_results, "FirstRealTestn20.rds")
+saveRDS(final_results, "FirstRealTestn10.rds")
 
 cat("\nMulti-method simulation complete and saved.\n")

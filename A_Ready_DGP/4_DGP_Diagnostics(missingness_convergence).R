@@ -5,7 +5,7 @@
 
 #############
 #Load
-burgette_results <- readRDS("FirstRealTestn20.rds")
+burgette_results <- readRDS("C:/Users/pfudi/PycharmProjects/MI_Poster/tristan stuff test/RDS_n=100.rds")
 
 results         <- burgette_results$results
 summary_results <- burgette_results$summary_results
@@ -216,3 +216,7 @@ ggplot(plot_binned,
     x = "Driver value",
     y = "Probability of missing (%)"
   )
+
+
+
+

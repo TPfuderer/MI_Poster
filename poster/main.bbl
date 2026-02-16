@@ -1,0 +1,213 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global/global}
+    \entry{cite:4}{book}{}{}
+      \name{author}{3}{}{%
+        {{hash=566d7db74170cd141bba2a7856e91742}{%
+           family={Cauchy},
+           familyi={C\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=6bc95b5d67babd4a061083221c3c80d7}{%
+           family={Maruyama},
+           familyi={M\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+        {{hash=40fe59d7912c05871bb467194532e786}{%
+           family={Kolmogorov},
+           familyi={K\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{14cf6ccc651efbf8653ecc4faaa1bb69}
+      \strng{fullhash}{14cf6ccc651efbf8653ecc4faaa1bb69}
+      \strng{fullhashraw}{14cf6ccc651efbf8653ecc4faaa1bb69}
+      \strng{bibnamehash}{14cf6ccc651efbf8653ecc4faaa1bb69}
+      \strng{authorbibnamehash}{14cf6ccc651efbf8653ecc4faaa1bb69}
+      \strng{authornamehash}{14cf6ccc651efbf8653ecc4faaa1bb69}
+      \strng{authorfullhash}{14cf6ccc651efbf8653ecc4faaa1bb69}
+      \strng{authorfullhashraw}{14cf6ccc651efbf8653ecc4faaa1bb69}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{A First Course in General Measure Theory}
+      \field{year}{1997}
+      \field{pages}{9958}
+      \range{pages}{1}
+    \endentry
+    \entry{cite:2}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=e1967f69e3f6da32aa4fa3fc2cd21d6a}{%
+           family={Chern},
+           familyi={C\bibinitperiod},
+           given={N.},
+           giveni={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{e1967f69e3f6da32aa4fa3fc2cd21d6a}
+      \strng{fullhash}{e1967f69e3f6da32aa4fa3fc2cd21d6a}
+      \strng{fullhashraw}{e1967f69e3f6da32aa4fa3fc2cd21d6a}
+      \strng{bibnamehash}{e1967f69e3f6da32aa4fa3fc2cd21d6a}
+      \strng{authorbibnamehash}{e1967f69e3f6da32aa4fa3fc2cd21d6a}
+      \strng{authornamehash}{e1967f69e3f6da32aa4fa3fc2cd21d6a}
+      \strng{authorfullhash}{e1967f69e3f6da32aa4fa3fc2cd21d6a}
+      \strng{authorfullhashraw}{e1967f69e3f6da32aa4fa3fc2cd21d6a}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{{J}ournal of Higher Knot Theory}
+      \field{month}{12}
+      \field{title}{Hyper-Nonnegative Definite, Infinite Polytopes of Null Functions and the Characterization of Quasi-Multiply Intrinsic, Completely Integrable, {A}rtinian Rings}
+      \field{volume}{15}
+      \field{year}{2001}
+      \field{pages}{303\bibrangedash 370}
+      \range{pages}{68}
+    \endentry
+    \entry{cite:5}{book}{}{}
+      \name{author}{2}{}{%
+        {{hash=aa53eb7588eb3de88b9c602a2c715398}{%
+           family={Clifford},
+           familyi={C\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=f096823e9ec411e83f3747394df23fd1}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={N.},
+           giveni={N\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Tanzanian Mathematical Society}%
+      }
+      \strng{namehash}{ef28b08af3a32a097d8391cc12f1cac5}
+      \strng{fullhash}{ef28b08af3a32a097d8391cc12f1cac5}
+      \strng{fullhashraw}{ef28b08af3a32a097d8391cc12f1cac5}
+      \strng{bibnamehash}{ef28b08af3a32a097d8391cc12f1cac5}
+      \strng{authorbibnamehash}{ef28b08af3a32a097d8391cc12f1cac5}
+      \strng{authornamehash}{ef28b08af3a32a097d8391cc12f1cac5}
+      \strng{authorfullhash}{ef28b08af3a32a097d8391cc12f1cac5}
+      \strng{authorfullhashraw}{ef28b08af3a32a097d8391cc12f1cac5}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{General Probability}
+      \field{year}{1996}
+      \field{pages}{9892}
+      \range{pages}{1}
+    \endentry
+    \entry{cite:3}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=d887beb901470b85140963d77f6376d7}{%
+           family={Kumar},
+           familyi={K\bibinitperiod},
+           given={X.},
+           giveni={X\bibinitperiod}}}%
+      }
+      \strng{namehash}{d887beb901470b85140963d77f6376d7}
+      \strng{fullhash}{d887beb901470b85140963d77f6376d7}
+      \strng{fullhashraw}{d887beb901470b85140963d77f6376d7}
+      \strng{bibnamehash}{d887beb901470b85140963d77f6376d7}
+      \strng{authorbibnamehash}{d887beb901470b85140963d77f6376d7}
+      \strng{authornamehash}{d887beb901470b85140963d77f6376d7}
+      \strng{authorfullhash}{d887beb901470b85140963d77f6376d7}
+      \strng{authorfullhashraw}{d887beb901470b85140963d77f6376d7}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{{J}ournal of Modern Arithmetic}
+      \field{month}{5}
+      \field{title}{On Modern Representation Theory}
+      \field{volume}{8}
+      \field{year}{1999}
+      \field{pages}{1\bibrangedash 17}
+      \range{pages}{17}
+    \endentry
+    \entry{cite:0}{book}{}{}
+      \name{author}{1}{}{%
+        {{hash=4955697acfd3c17ea0233504c877ebed}{%
+           family={Watanabe},
+           familyi={W\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Singapore Mathematical Society}%
+      }
+      \strng{namehash}{4955697acfd3c17ea0233504c877ebed}
+      \strng{fullhash}{4955697acfd3c17ea0233504c877ebed}
+      \strng{fullhashraw}{4955697acfd3c17ea0233504c877ebed}
+      \strng{bibnamehash}{4955697acfd3c17ea0233504c877ebed}
+      \strng{authorbibnamehash}{4955697acfd3c17ea0233504c877ebed}
+      \strng{authornamehash}{4955697acfd3c17ea0233504c877ebed}
+      \strng{authorfullhash}{4955697acfd3c17ea0233504c877ebed}
+      \strng{authorfullhashraw}{4955697acfd3c17ea0233504c877ebed}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Group Theory}
+      \field{year}{2010}
+      \field{pages}{75}
+      \range{pages}{1}
+    \endentry
+    \entry{cite:1}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=131093b32cfc248eb878910414e84f69}{%
+           family={Zhao},
+           familyi={Z\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+        {{hash=317adb20c6b3ea65befa45a219f6410d}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{205c07d69aee131b219534459d5cc9cb}
+      \strng{fullhash}{205c07d69aee131b219534459d5cc9cb}
+      \strng{fullhashraw}{205c07d69aee131b219534459d5cc9cb}
+      \strng{bibnamehash}{205c07d69aee131b219534459d5cc9cb}
+      \strng{authorbibnamehash}{205c07d69aee131b219534459d5cc9cb}
+      \strng{authornamehash}{205c07d69aee131b219534459d5cc9cb}
+      \strng{authorfullhash}{205c07d69aee131b219534459d5cc9cb}
+      \strng{authorfullhashraw}{205c07d69aee131b219534459d5cc9cb}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{{J}ournal of Hyperbolic Operator Theory}
+      \field{month}{3}
+      \field{title}{Isomorphisms and Questions of Injectivity}
+      \field{volume}{45}
+      \field{year}{1992}
+      \field{pages}{55\bibrangedash 66}
+      \range{pages}{12}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

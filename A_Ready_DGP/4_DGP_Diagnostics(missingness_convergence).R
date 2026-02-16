@@ -123,35 +123,6 @@ cat("Missingness rate (Y):", round(missing_rate, 3), "\n\n")
 
 
 # ----------------------------------------------------------
-# 2️⃣ Logistic regression: Is missingness MAR?
-# ----------------------------------------------------------
-
-# Create missingness indicator
-R_Y <- as.numeric(is.na(miss_df$Y))
-
-# Use fully observed covariates as predictors
-mar_model <- glm(R_Y ~ X1 + X2 + X3 + X4,
-                 data = full_df,
-                 family = binomial)
-
-cat("Logistic regression of missingness on observed X:\n")
-print(summary(mar_model))
-
-
-############################################################
-# MISSINGNESS VS DRIVERS (SIM 1)
-############################################################
-
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-
-r <- 1
-
-full_df <- full_store[[r]]
-miss_df <- miss_store[[r]]
-
-# ----------------------------------------------------------
 # Create missingness indicators for all variables
 # ----------------------------------------------------------
 

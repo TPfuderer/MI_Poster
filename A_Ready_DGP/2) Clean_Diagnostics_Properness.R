@@ -5,7 +5,7 @@
 library(miceRanger)
 #############
 #Load
-burgette_results <- readRDS("C:/Users/pfudi/PycharmProjects/MI_Poster/tristan stuff test/RDS_n=100.rds")
+burgette_results <- readRDS("Testn5.rds")
 
 results         <- burgette_results$results
 summary_results <- burgette_results$summary_results
@@ -70,7 +70,6 @@ for (i in seq_along(methods)) {
   
   bias_vec  <- colMeans(coef_mat) - true_beta
   mean_bias <- mean(abs(bias_vec))
-  
   # ======================================================
   # 2️⃣ COVERAGE
   # ======================================================
@@ -153,6 +152,17 @@ p_cov <- ggplot(plot_df,
 
 print(p_cov)
 
+cat("\n================ COVERAGE =================\n")
+cat("Good ≈ 0.95 | <0.90 undercoverage | >0.97 conservative\n\n")
+
+coverage_table <- plot_df %>%
+  dplyr::select(Method, Parameter, Coverage) %>%
+  pivot_wider(names_from = Method, values_from = Coverage) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 3)))
+
+print(coverage_table)
+
+
 #2️⃣ VARIANCE CHECK (T vs Empirical)
 var_df <- plot_df %>%
   dplyr::select(Method, Parameter, EmpVar, RubinVar) %>%
@@ -198,6 +208,66 @@ p_ratio <- ggplot(ratio_df,
 
 grid.arrange(p_var, p_ratio, ncol = 2)
 
+variance_summary <- plot_df %>%
+  group_by(Method) %>%
+  summarise(
+    Avg_EmpVar   = mean(EmpVar, na.rm = TRUE),
+    Avg_RubinVar = mean(RubinVar, na.rm = TRUE),
+    Avg_Ratio    = mean(RubinVar / EmpVar, na.rm = TRUE)
+  ) %>%
+  mutate(across(where(is.numeric), round, 3))
+
+  cat("\n================ VARIANCE CALIBRATION =================\n")
+  cat("Good ≈ 1 | <1 underestimation | >1 overestimation\n\n")
+  
+  variance_table <- plot_df %>%
+    dplyr::select(Method, Parameter, EmpVar, RubinVar) %>%
+    mutate(Ratio = RubinVar / EmpVar) %>%
+    dplyr::select(Method, Parameter, Ratio) %>%
+    pivot_wider(names_from = Method, values_from = Ratio) %>%
+    mutate(across(where(is.numeric), ~ round(.x, 3)))
+  
+  print(variance_table)
+
+
+# library(gt)
+# 
+# # Create gt object
+# variance_gt <- variance_summary %>%
+#   gt() %>%
+#   tab_header(
+#     title = "Variance Match",
+#     subtitle = "Rubin Total Variance vs Empirical Sampling Variance"
+#   ) %>%
+#   cols_label(
+#     Avg_EmpVar   = "Empirical Var",
+#     Avg_RubinVar = "Rubin Var (T)",
+#     Avg_Ratio    = "T / EmpVar"
+#   ) %>%
+#   fmt_number(
+#     columns = c(Avg_EmpVar, Avg_RubinVar, Avg_Ratio),
+#     decimals = 3
+#   ) %>%
+#   tab_options(
+#     table.font.size = px(18),
+#     heading.title.font.size = px(22),
+#     heading.subtitle.font.size = px(16)
+#   )
+# 
+# # Save vector PDF (best for LaTeX poster)
+# gtsave(
+#   variance_gt,
+#   "variance_match.pdf"
+# )
+# 
+# # Save high-resolution PNG
+# gtsave(
+#   variance_gt,
+#   "variance_match.png",
+#   zoom = 3
+# )
+
+
 #3️⃣ BIAS CHECK
 cat("\nBIAS CHECK\n")
 cat("Good: Bias ≈ 0 | Large systematic shift = model misspecification\n\n")
@@ -215,9 +285,16 @@ p_bias <- ggplot(plot_df,
 
 print(p_bias)
 
-############################################################
-# RUBIN INTERNAL DIAGNOSTICS (METHOD-LEVEL SUMMARY)
-############################################################
+cat("\n================ BIAS =================\n")
+cat("Good ≈ 0 | Large systematic shift = misspecification\n\n")
+
+bias_table <- plot_df %>%
+  dplyr::select(Method, Parameter, Bias) %>%
+  pivot_wider(names_from = Method, values_from = Bias) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 3)))
+
+print(bias_table)
+
 
 ############################################################
 # RUBIN INTERNAL DIAGNOSTICS (ALL SIM RUNS)
@@ -260,14 +337,25 @@ for (method in methods) {
     df_all[r, ]     <- nu_vec
   }
   
+  B_all <- matrix(NA, n_runs, p)
+  W_all <- matrix(NA, n_runs, p)
+  T_all <- matrix(NA, n_runs, p)
+  W_vec <- SE_vec^2
+  B_all[r, ] <- B_vec
+  W_all[r, ] <- W_vec
+  T_all[r, ] <- T_vec
+  
   rubin_avg_list[[method]] <- data.frame(
     Method = method,
     Parameter = names(true_beta),
     Mean_Lambda = colMeans(lambda_all, na.rm = TRUE),
     Mean_FMI    = colMeans(fmi_all, na.rm = TRUE),
-    Mean_DF     = colMeans(df_all, na.rm = TRUE)
+    Mean_DF     = colMeans(df_all, na.rm = TRUE),
+    Mean_B      = colMeans(B_all, na.rm = TRUE),
+    Mean_W      = colMeans(W_all, na.rm = TRUE),
+    Mean_T      = colMeans(T_all, na.rm = TRUE)
   )
-}
+  
 
 rubin_avg_table <- do.call(rbind, rubin_avg_list)
 
@@ -277,8 +365,45 @@ rubin_method_summary <- rubin_avg_table %>%
   summarise(
     Avg_Lambda = round(mean(Mean_Lambda), 3),
     Avg_FMI    = round(mean(Mean_FMI), 3),
-    Avg_DF     = round(mean(Mean_DF), 1)
+    Avg_DF     = round(mean(Mean_DF), 1),
+    Avg_B      = round(mean(Mean_B), 4),
+    Avg_W      = round(mean(Mean_W), 4),
+    Avg_T      = round(mean(Mean_T), 4)
   )
+
+}
+rubin_method_summary
+# 
+# library(gt)
+# 
+# rubin_gt <- rubin_method_summary %>%
+#   gt() %>%
+#   tab_header(
+#     title = "Rubin Internal Diagnostics",
+#     subtitle = "Variance Decomposition & Properness Diagnostics"
+#   ) %>%
+#   cols_label(
+#     Avg_Lambda = "λ",
+#     Avg_FMI    = "FMI",
+#     Avg_DF     = "DF",
+#     Avg_B      = "Var (B)",
+#     Avg_W      = "Var (W)",
+#     Avg_T      = "Var (T)"
+#   ) %>%
+#   tab_options(
+#     table.font.size = px(18),        # good for poster
+#     heading.title.font.size = px(22),
+#     heading.subtitle.font.size = px(16)
+#   )
+# gtsave(
+#   rubin_gt,
+#   "rubin_diagnostics.png",
+#   zoom = 3
+# )
+# gtsave(
+#   rubin_gt,
+#   "rubin_diagnostics.pdf"
+#)
 
 cat("\n================ RUBIN INTERNAL DIAGNOSTICS =================\n")
 cat("Lambda = Proportion of missing-data variance\n")

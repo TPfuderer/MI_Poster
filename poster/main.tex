@@ -8,6 +8,7 @@
 \usepackage{mathrsfs}
 \usepackage{graphicx}
 \usepackage{adjustbox}
+\usepackage{caption} % für \captionof
 \usepackage{enumitem}
 \usepackage[backend=biber,style=numeric]{biblatex}
 \usepackage{emory-theme}
@@ -25,7 +26,7 @@
 \author{Mühlbauer David, Pedros Philipp, Pfuderer Tristan}
 \institute{Institut für Statistik, Universität Bamberg\vspace{15pt}}
 
-\titlegraphic{\includegraphics[width=0.07\textwidth]{lerhstuhl_logo.png}}
+\titlegraphic{\includegraphics[width=0.07\textwidth]{bilder/lerhstuhl_logo.png}}
 
 % begin document
 \begin{document}
@@ -57,17 +58,38 @@
     }
 
     \column{0.36}
-    \block{Results}{
-        The goal of the present paper is to extend nonnegative numbers. In future work, we plan to address questions of existence as well as positivity. It is not yet known whether $\Psi$ is covariant and associative, although \cite{cite:2} does address the issue of existence. This could shed important light on a conjecture of Kovalevskaya. In \cite{cite:0}, it is shown that \begin{align*} q^{-3} & \le \frac{\overline{\sqrt{2}-\emptyset}}{\tilde{\omega} \left( e, \dots, \frac{1}{P ( A )} \right)} \wedge p \left( \bar{K}^{-5}, \tilde{m} \right) \\ & = \max_{B \to \emptyset}  1 \pm \dots \cup \pi \left(-q ( d ), \dots, \mathscr{{C}}'' \right)  \\ & \le \left\{ 1^{-7} \colon \cosh^{-1} \left(-\kappa \right) \le \max \int_{\hat{M}} \tanh \left( C^{5} \right) \,d \theta \right\} \\ & \le \prod  \cosh^{-1} \left( \pi^{-8} \right) + \dots \vee \omega \left(-\pi, \infty \sqrt{2} \right)  .\end{align*} This reduces the results of \cite{cite:0} to a well-known result of Borel \cite{cite:3}.
+    \block{Data Generating Process}{
+    	$n=1000$; $m=10$; $R = 100$, $\forall k: X_k\sim \mathcal{N}(0, 1); \varepsilon\sim \mathcal{N}(0, 1)$. The model is based on that of \cite{cite:burgette}, with the distinction that $X_9$ and $X_{10}$ are used exclusively to model the missingness mechanism and are not included as predictors.
         
-        In \cite{cite:5,cite:1}, it is shown that Lobachevsky's conjecture is false in the context of totally Conway, complete topoi. Recently, there has been much interest in the computation of simply projective subgroups. This could shed important light on a conjecture of Cauchy.
-        \vspace{1em}
-        \begin{tikzfigure}[Big fancy graphic.]
-            \includegraphics[width=0.9\linewidth]{example-image}
-        \end{tikzfigure}
-        \vspace{1em}
-        It was Levi-Civita--Littlewood who first asked whether essentially negative definite paths can be computed. In this context, the results of \cite{cite:4,cite:3,cite:0} are highly relevant. Here, existence is clearly a concern. Hence in \cite{cite:5}, the authors characterized primes. Now is it possible to derive pairwise empty equations? Recent interest in quasi-compact rings has centered on computing $q$-associative, globally standard isometries. Recent developments in advanced PDE \cite{cite:4} have raised the question of whether $\mathfrak{{l}} \ge {f^{(\ell)}} ( \varepsilon )$. Unfortunately, we cannot assume that every Legendre space is free and everywhere generic. It is essential to consider that $y$ may be bounded. Let us suppose ${\mathscr{{K}}_{\mathscr{{M}}}} = \| S \|$.  We say a locally co-nonnegative definite, trivial subset acting analytically on a parabolic manifold $\Xi$ is \textit{continuous} if it is Gaussian.
+       \begin{align}
+       	Y \hspace{30pt}&=\hspace{30pt} 0.5\cdot\sum_{1}^{5} X_i \hspace{5pt}+ X_3^{2} + X_1 X_2 + X_4X_5 + \varepsilon
+       \end{align}
+       with correlation $\rho$ given as:
+       \begin{align}
+       	\rho(X_i,X_j) \hspace{10pt}&=\hspace{30pt} 0.5 \hspace{50pt}( i\neq j;\vspace{10pt} i,j \in \{1;2;3\})\\[20pt]
+       	\rho(X_4,X_5) \hspace{10pt}&=\hspace{30pt} 0.3
+       \end{align} 
+       
     }
+    \block{Missingness Model}{
+    	The generation of the Missing Data follows a Missing at Random (MAR)-mechanism. The missingness indicator $R_l$ is determined by a Bernoulli function, which probability depends on a logit function with arguments $X_9$ and $X_{10}$.\\\vspace{20pt}
+    	\begin{minipage}[c]{0.52\linewidth}
+    		\centering
+    		\includegraphics[width=\linewidth]{bilder/png_MAR_Heatmap.png}
+    		\captionof{figure}{Heat map of the average missing entries depending on $X_9$ and $X_{10}$. An $i$-th grid square contains $a_i$ values, of which $b_i$ are NA. The colour visualises the averaged $\frac{b_i}{a_i}$ over several NA simulations. The existence of a color gradient implies a MAR-process.}
+    	\end{minipage}\hfill
+    	\begin{minipage}[c]{0.44\linewidth}
+    		$X_{i,l}$ depicts a value of the $i^{th}$ column and $l^{th}$ row. As recommended in \cite{cite:zhang}, he parameters were chosen such that it results in a missingness of around $34\%$ in the data.
+    		\begin{align}
+    			z_l &= -0.85 + 0.5\cdot (X_{4;l} - X_{5;l}) \\[10pt]
+    			\sigma(z_l) &= \frac{1}{1 - \exp(z_l)} \\[10pt]
+    			R_l &\sim \text{Ber}(\sigma(z_l))
+    		\end{align}
+    	\end{minipage}
+    }
+    
+    
+    
 
     \column{0.32}
     \block{Comparison}{

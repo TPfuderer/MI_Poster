@@ -19,6 +19,39 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global/global}
+    \entry{cite:burgette}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=82bd8103c1a7528fde67246cb798cd5b}{%
+           family={Burgette*},
+           familyi={B\bibinitperiod},
+           given={Lane\bibnamedelima F.},
+           giveni={L\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{hash=97d7feab6be2178c08aae7071c2b494c}{%
+           family={Reiter},
+           familyi={R\bibinitperiod},
+           given={Jerome\bibnamedelima P.},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{c98ce64c85d8e60db85593685b77797d}
+      \strng{fullhash}{c98ce64c85d8e60db85593685b77797d}
+      \strng{fullhashraw}{c98ce64c85d8e60db85593685b77797d}
+      \strng{bibnamehash}{c98ce64c85d8e60db85593685b77797d}
+      \strng{authorbibnamehash}{c98ce64c85d8e60db85593685b77797d}
+      \strng{authornamehash}{c98ce64c85d8e60db85593685b77797d}
+      \strng{authorfullhash}{c98ce64c85d8e60db85593685b77797d}
+      \strng{authorfullhashraw}{c98ce64c85d8e60db85593685b77797d}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Journal of Epidemiology}
+      \field{month}{1}
+      \field{title}{Multiple Imputation for Missing Data via Sequential Regression Trees}
+      \field{volume}{172}
+      \field{year}{2010}
+      \field{pages}{1070\bibrangedash 1076}
+      \range{pages}{7}
+    \endentry
     \entry{cite:4}{book}{}{}
       \name{author}{3}{}{%
         {{hash=566d7db74170cd141bba2a7856e91742}{%

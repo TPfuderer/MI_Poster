@@ -59,7 +59,7 @@
 
     \column{0.36}
     \block{Data Generating Process}{
-    	$n=1000$; $m=10$; $R = 100$, $\forall k: X_k\sim \mathcal{N}(0, 1); \varepsilon\sim \mathcal{N}(0, 1)$. The model is based on the one used in \cite{cite:burgette}, with the difference of $X_9$ and $X_{10}$ functioning exclusively as variable for the missingness, and not as predictor.
+    	$n=1000$; $m=10$; $R = 100$, $\forall k: X_k\sim \mathcal{N}(0, 1); \varepsilon\sim \mathcal{N}(0, 1)$. The model is based on that of \cite{cite:burgette}, with the distinction that $X_9$ and $X_{10}$ are used exclusively to model the missingness mechanism and are not included as predictors.
         
        \begin{align}
        	Y \hspace{30pt}&=\hspace{30pt} 0.5\cdot\sum_{1}^{5} X_i \hspace{5pt}+ X_3^{2} + X_1 X_2 + X_4X_5 + \varepsilon
@@ -72,14 +72,14 @@
        
     }
     \block{Missingness Model}{
-    	The generation of the Missing Data follows a Missing at Random (MAR)-mechanism. The missingness indicator $R_l$ is determined by a Bernoulli function, which probability depends on a logit function with arguments $X_9$ and $X_{10}$. This results in around $34\%$ missingness of the data.
+    	The generation of the Missing Data follows a Missing at Random (MAR)-mechanism. The missingness indicator $R_l$ is determined by a Bernoulli function, which probability depends on a logit function with arguments $X_9$ and $X_{10}$.\\\vspace{20pt}
     	\begin{minipage}[c]{0.52\linewidth}
     		\centering
     		\includegraphics[width=\linewidth]{bilder/png_MAR_Heatmap.png}
     		\captionof{figure}{Heat map of the average missing entries depending on $X_9$ and $X_{10}$. An $i$-th grid square contains $a_i$ values, of which $b_i$ are NA. The colour visualises the averaged $\frac{b_i}{a_i}$ over several NA simulations. The existence of a color gradient implies a MAR-process.}
     	\end{minipage}\hfill
-    	\begin{minipage}[b]{0.44\linewidth}
-    		$X_{i,l}$ depicts a value of the $i^{th}$ column and $l^{th}$ row.
+    	\begin{minipage}[c]{0.44\linewidth}
+    		$X_{i,l}$ depicts a value of the $i^{th}$ column and $l^{th}$ row. As recommended in \cite{cite:zhang}, he parameters were chosen such that it results in a missingness of around $34\%$ in the data.
     		\begin{align}
     			z_l &= -0.85 + 0.5\cdot (X_{4;l} - X_{5;l}) \\[10pt]
     			\sigma(z_l) &= \frac{1}{1 - \exp(z_l)} \\[10pt]

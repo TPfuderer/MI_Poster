@@ -2389,23 +2389,13 @@
     <bcf:citekey order="13" intorder="1">cite:3</bcf:citekey>
     <bcf:citekey order="14" intorder="1">cite:1</bcf:citekey>
     <bcf:citekey order="15" intorder="1">cite:0</bcf:citekey>
-    <bcf:citekey order="16" intorder="1">cite:2</bcf:citekey>
+    <bcf:citekey order="16" intorder="1">cite:burgette</bcf:citekey>
     <bcf:citekey order="17" intorder="1">cite:0</bcf:citekey>
-    <bcf:citekey order="18" intorder="1">cite:0</bcf:citekey>
+    <bcf:citekey order="18" intorder="1">cite:4</bcf:citekey>
     <bcf:citekey order="19" intorder="1">cite:3</bcf:citekey>
-    <bcf:citekey order="20" intorder="1">cite:5</bcf:citekey>
-    <bcf:citekey order="20" intorder="2">cite:1</bcf:citekey>
-    <bcf:citekey order="21" intorder="1">cite:4</bcf:citekey>
-    <bcf:citekey order="21" intorder="2">cite:3</bcf:citekey>
-    <bcf:citekey order="21" intorder="3">cite:0</bcf:citekey>
-    <bcf:citekey order="22" intorder="1">cite:5</bcf:citekey>
-    <bcf:citekey order="23" intorder="1">cite:4</bcf:citekey>
-    <bcf:citekey order="24" intorder="1">cite:0</bcf:citekey>
-    <bcf:citekey order="25" intorder="1">cite:4</bcf:citekey>
-    <bcf:citekey order="26" intorder="1">cite:3</bcf:citekey>
-    <bcf:citekey order="27" intorder="1">cite:2</bcf:citekey>
-    <bcf:citekey order="28" intorder="1">cite:1</bcf:citekey>
-    <bcf:citekey order="29" intorder="1">cite:4</bcf:citekey>
+    <bcf:citekey order="20" intorder="1">cite:2</bcf:citekey>
+    <bcf:citekey order="21" intorder="1">cite:1</bcf:citekey>
+    <bcf:citekey order="22" intorder="1">cite:4</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nty">

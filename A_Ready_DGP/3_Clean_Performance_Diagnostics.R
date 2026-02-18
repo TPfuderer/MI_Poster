@@ -96,6 +96,43 @@ cat("\n================ MISLEADING METRICS =================\n")
 print(ml_summary)
 cat("=====================================================\n\n")
 
+library(gt)
+
+# Create gt object
+ml_gt <- ml_summary %>%
+  arrange(Mean_RMSE_missing) %>%
+  gt() %>%
+  tab_header(
+    title = "Predictive Performance on Missing Y"
+  ) %>%
+  cols_label(
+    Mean_RMSE_missing = "↓ RMSE",
+    Mean_R2_missing   = "↑ R²",
+    Mean_SE           = "Mean SE"
+  ) %>%
+  fmt_number(
+    columns = -Method,
+    decimals = 3
+  ) %>%
+  tab_options(
+    table.font.size = px(18),
+    heading.title.font.size = px(22)
+  )
+
+# Save vector PDF (best for LaTeX poster)
+gtsave(
+  ml_gt,
+  "predictive_performance.pdf"
+)
+
+# Save high-resolution PNG
+gtsave(
+  ml_gt,
+  "predictive_performance.png",
+  zoom = 3
+)
+
+
 ##########
 #plot
 ##########

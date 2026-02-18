@@ -451,3 +451,8 @@ cat("\nMulti-method simulation complete and saved.\n")
 
 mean(is.na(miss_df$Y))           # overall missing rate Y
 summary(glm(is.na(Y) ~ X9 + X10, data = miss_df, family = binomial))
+
+summary(miss_store[[1]])
+names(miss_imp)
+
+

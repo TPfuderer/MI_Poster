@@ -1,0 +1,24 @@
+Tools used in the creation of this poster:
+- OpenAI Chatgpt (5.2)
+- Claude (Sonnet 4.6)
+- Potentially small Website embedded tools (e.g. Overleaf)
+
+Areas it was used in:
+
+Research:
+- Deep Search for relevant papers and CRAN/GitHub documentation
+- Double checking claims made vs actual literature to avoid misquotes
+- Understanding Theory and Methods
+
+Code:
+- First draft created manually with influnce from Burgette (2010) and Doove (2014)
+- AI used heavily in cleaning code and choosing names
+- Used for bugfixing
+- Used mostly to create tables and graphics with manual instructions how they should look
+- Used for quick Latex syntax conversion and bugfixing
+
+Language:
+- Used for Grammar correction.
+
+We reviewed, verified, and take responsibility!
+

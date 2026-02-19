@@ -14,7 +14,7 @@ missing_mech <- "MAR"   # "MAR" or "MCAR"
 # -----------------------------
 n     <- 1000
 p     <- 10
-R     <- 100
+R     <- 25
 m_val <- 10
 
 # -----------------------------
@@ -213,6 +213,7 @@ for (r in 1:R) {
         maxit = 20,
         num.trees = 200,
         num.threads = 5,
+        meanMatchCandidates = 5,
         verbose = FALSE
       )
       imputed_list <- completeData(Imp_obj)
@@ -421,6 +422,6 @@ final_results <- list(
   date            = Sys.time()
 )
 
-saveRDS(final_results, "Testn5.rds")
+saveRDS(final_results, "Testn8.rds")
 
 cat("\nMulti-method simulation complete and saved.\n")

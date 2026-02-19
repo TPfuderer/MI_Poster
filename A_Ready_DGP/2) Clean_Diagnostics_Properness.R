@@ -5,7 +5,7 @@
 library(miceRanger)
 #############
 #Load
-burgette_results <- readRDS("Testn5.rds")
+burgette_results <- readRDS("Test4.rds")
 
 results         <- burgette_results$results
 summary_results <- burgette_results$summary_results
@@ -115,9 +115,7 @@ for (i in seq_along(methods)) {
 
 properness_table[,-1] <- round(properness_table[,-1], 3)
 
-cat("\n================= PROPERNESS SUMMARY =================\n")
-print(properness_table)
-cat("======================================================\n\n")
+#print(properness_table)
 
 plot_df <- bind_rows(plot_storage)
 
@@ -146,11 +144,26 @@ p_cov <- ggplot(plot_df,
   geom_hline(yintercept=0.95,
              linetype="dashed",
              color="red") +
-  theme_minimal() +
-  labs(title="Coverage by Parameter",
-       y="Coverage")
+  theme_minimal(base_size = 18) +
+  theme(
+    axis.text.x  = element_text(angle = 90, vjust = 0.5, size = 26, face = "bold"),
+    axis.text.y  = element_text(size = 26),
+    axis.title   = element_text(size = 30),
+    plot.title   = element_text(size = 20, face = "bold"),
+    legend.title = element_text(size = 28),
+    legend.text  = element_text(size = 26)
+  ) +
+  labs(title = "Coverage by Parameter",
+       y = "Coverage",
+       x = "Parameter")
 
 print(p_cov)
+ggsave("coverage_plot.png",
+       plot = p_cov,
+       width = 12,
+       height = 8,
+       dpi = 600)
+
 
 cat("\n================ COVERAGE =================\n")
 cat("Good ≈ 0.95 | <0.90 undercoverage | >0.97 conservative\n\n")
@@ -230,42 +243,42 @@ variance_summary <- plot_df %>%
   print(variance_table)
 
 
-# library(gt)
-# 
-# # Create gt object
-# variance_gt <- variance_summary %>%
-#   gt() %>%
-#   tab_header(
-#     title = "Variance Match",
-#     subtitle = "Rubin Total Variance vs Empirical Sampling Variance"
-#   ) %>%
-#   cols_label(
-#     Avg_EmpVar   = "Empirical Var",
-#     Avg_RubinVar = "Rubin Var (T)",
-#     Avg_Ratio    = "T / EmpVar"
-#   ) %>%
-#   fmt_number(
-#     columns = c(Avg_EmpVar, Avg_RubinVar, Avg_Ratio),
-#     decimals = 3
-#   ) %>%
-#   tab_options(
-#     table.font.size = px(18),
-#     heading.title.font.size = px(22),
-#     heading.subtitle.font.size = px(16)
-#   )
-# 
-# # Save vector PDF (best for LaTeX poster)
-# gtsave(
-#   variance_gt,
-#   "variance_match.pdf"
-# )
-# 
-# # Save high-resolution PNG
-# gtsave(
-#   variance_gt,
-#   "variance_match.png",
-#   zoom = 3
-# )
+library(gt)
+
+# Create gt object
+variance_gt <- variance_summary %>%
+  gt() %>%
+  tab_header(
+    title = "Variance Match",
+    subtitle = "Rubin Total Variance vs Empirical Sampling Variance"
+  ) %>%
+  cols_label(
+    Avg_EmpVar   = "Empirical Var",
+    Avg_RubinVar = "Rubin Var (T)",
+    Avg_Ratio    = "T / EmpVar"
+  ) %>%
+  fmt_number(
+    columns = c(Avg_EmpVar, Avg_RubinVar, Avg_Ratio),
+    decimals = 3
+  ) %>%
+  tab_options(
+    table.font.size = px(18),
+    heading.title.font.size = px(22),
+    heading.subtitle.font.size = px(16)
+  )
+
+# Save vector PDF (best for LaTeX poster)
+gtsave(
+  variance_gt,
+  "variance_match.pdf"
+)
+
+# Save high-resolution PNG
+gtsave(
+  variance_gt,
+  "variance_match.png",
+  zoom = 3
+)
 
 
 #3️⃣ BIAS CHECK
@@ -273,17 +286,33 @@ cat("\nBIAS CHECK\n")
 cat("Good: Bias ≈ 0 | Large systematic shift = model misspecification\n\n")
 
 p_bias <- ggplot(plot_df,
-                 aes(x=Parameter,
-                     y=Bias,
-                     fill=Method)) +
-  geom_bar(stat="identity",
-           position=position_dodge()) +
-  geom_hline(yintercept=0,
-             linetype="dashed") +
-  theme_minimal() +
-  labs(title="Bias by Parameter")
+                 aes(x = Parameter,
+                     y = Bias,
+                     fill = Method)) +
+  geom_bar(stat = "identity",
+           position = position_dodge()) +
+  geom_hline(yintercept = 0,
+             linetype = "dashed") +
+  theme_minimal(base_size = 18) +
+  theme(
+    axis.text.x  = element_text(angle = 90, vjust = 0.5, size = 26, face = "bold"),
+    axis.text.y  = element_text(size = 26),
+    axis.title   = element_text(size = 30),
+    plot.title   = element_text(size = 20, face = "bold"),
+    legend.title = element_text(size = 28),
+    legend.text  = element_text(size = 26)
+  ) +
+  labs(title = "Bias by Parameter",
+       y = "Bias",
+       x = "Parameter")
 
 print(p_bias)
+
+ggsave("bias_plot.png",
+       plot = p_bias,
+       width = 12,
+       height = 8,
+       dpi = 600)
 
 cat("\n================ BIAS =================\n")
 cat("Good ≈ 0 | Large systematic shift = misspecification\n\n")
@@ -373,37 +402,37 @@ rubin_method_summary <- rubin_avg_table %>%
 
 }
 rubin_method_summary
-# 
-# library(gt)
-# 
-# rubin_gt <- rubin_method_summary %>%
-#   gt() %>%
-#   tab_header(
-#     title = "Rubin Internal Diagnostics",
-#     subtitle = "Variance Decomposition & Properness Diagnostics"
-#   ) %>%
-#   cols_label(
-#     Avg_Lambda = "λ",
-#     Avg_FMI    = "FMI",
-#     Avg_DF     = "DF",
-#     Avg_B      = "Var (B)",
-#     Avg_W      = "Var (W)",
-#     Avg_T      = "Var (T)"
-#   ) %>%
-#   tab_options(
-#     table.font.size = px(18),        # good for poster
-#     heading.title.font.size = px(22),
-#     heading.subtitle.font.size = px(16)
-#   )
-# gtsave(
-#   rubin_gt,
-#   "rubin_diagnostics.png",
-#   zoom = 3
-# )
-# gtsave(
-#   rubin_gt,
-#   "rubin_diagnostics.pdf"
-#)
+
+library(gt)
+
+rubin_gt <- rubin_method_summary %>%
+  gt() %>%
+  tab_header(
+    title = "Rubin Internal Diagnostics",
+    subtitle = "Variance Decomposition & Properness Diagnostics"
+  ) %>%
+  cols_label(
+    Avg_Lambda = "λ",
+    Avg_FMI    = "FMI",
+    Avg_DF     = "DF",
+    Avg_B      = "Var (B)",
+    Avg_W      = "Var (W)",
+    Avg_T      = "Var (T)"
+  ) %>%
+  tab_options(
+    table.font.size = px(18),        # good for poster
+    heading.title.font.size = px(22),
+    heading.subtitle.font.size = px(16)
+  )
+gtsave(
+  rubin_gt,
+  "rubin_diagnostics.png",
+  zoom = 3
+)
+gtsave(
+  rubin_gt,
+  "rubin_diagnostics.pdf"
+)
 
 cat("\n================ RUBIN INTERNAL DIAGNOSTICS =================\n")
 cat("Lambda = Proportion of missing-data variance\n")

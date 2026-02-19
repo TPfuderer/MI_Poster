@@ -5,7 +5,7 @@
 
 #############
 #Load
-burgette_results <- readRDS("C:/Users/pfudi/PycharmProjects/MI_Poster/tristan stuff test/RDS_n=100.rds")
+burgette_results <- readRDS("25_iterations_300sims_uff.rds")
 
 results         <- burgette_results$results
 summary_results <- burgette_results$summary_results
@@ -33,7 +33,7 @@ if (method_html == "rf_ranger") {
 } else {
   imputed_list <- complete(Imp_obj, "all")
 }
-############################################################
+##########
 # STANDARD DIAGNOSTIC PLOTS — FIRST SIM RUN (WITH HEADERS)
 ############################################################
 

@@ -487,53 +487,70 @@ cat("=====================================================\n\n")
 
 
 ############################################################
-# Merged Table (requires code above to be run!)
+# MERGED + TRANSPOSED TABLE (ONE CHUNK)
 ############################################################
-# --- merge ML + Rubin diagnostics ---
-combined_table <- ml_summary %>%
+
+############################################################
+# MERGED + TRANSPOSED TABLE (CLEAN VERSION)
+############################################################
+
+library(dplyr)
+library(tidyr)
+library(gt)
+
+combined_gt <- ml_summary %>%
   dplyr::select(Method,
                 Mean_RMSE_missing,
                 Mean_R2_missing,
                 Mean_SE) %>%
   left_join(
-    rubin_method_summary,
+    rubin_method_summary %>%
+      dplyr::select(Method,
+                    Avg_Lambda,
+                    Avg_FMI,
+                    Avg_DF,
+                    Avg_B),
     by = "Method"
   ) %>%
   arrange(Mean_RMSE_missing) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 3))) %>%
+  pivot_longer(
+    cols = -Method,
+    names_to = "Metric",
+    values_to = "Value"
+  ) %>%
+  pivot_wider(
+    names_from = Method,
+    values_from = Value
+  ) %>%
   mutate(
-    across(where(is.numeric), ~ round(.x, 3))
-  )
-
-library(gt)
-
-combined_gt <- combined_table %>%
+    Metric = recode(
+      Metric,
+      Mean_RMSE_missing = "↓ RMSE",
+      Mean_R2_missing   = "↑ R²",
+      Mean_SE           = "Mean SE",
+      Avg_Lambda        = "λ",
+      Avg_FMI           = "FMI",
+      Avg_DF            = "DF",
+      Avg_B             = "Var (B)"
+    )
+  ) %>%
   gt() %>%
   tab_header(
     title = "MI Performance and Properness Summary",
     subtitle = "Predictive Accuracy and Rubin Diagnostics"
   ) %>%
-  cols_label(
-    Mean_RMSE_missing = "↓ RMSE",
-    Mean_R2_missing   = "↑ R²",
-    Mean_SE           = "Mean SE",
-    Avg_Lambda        = "λ",
-    Avg_FMI           = "FMI",
-    Avg_DF            = "DF",
-    Avg_B             = "Var (B)",
-    Avg_W             = "Var (W)",
-    Avg_T             = "Var (T)"
-  ) %>%
   fmt_number(
-    columns = -Method,
+    columns = -Metric,
     decimals = 3
   ) %>%
   cols_align(
     align = "center",
-    -Method
+    -Metric
   ) %>%
   cols_align(
     align = "left",
-    Method
+    Metric
   ) %>%
   tab_options(
     table.font.size = px(18),
@@ -541,14 +558,6 @@ combined_gt <- combined_table %>%
     heading.subtitle.font.size = px(16)
   )
 
+gtsave(combined_gt, "mi_combined_summary.pdf")
+gtsave(combined_gt, "mi_combined_summary.png", zoom = 3)
 
-gtsave(
-  combined_gt,
-  "mi_combined_summary.pdf"
-)
-
-gtsave(
-  combined_gt,
-  "mi_combined_summary.png",
-  zoom = 3
-)

@@ -128,22 +128,29 @@ add_derived <- function(dat){
 # (n_cores Prozesse parallel, jeder single-threaded)
 # nested Parallelitaet wuerde zu Ressourcenkonflikten fuehren
 # ============================================================
-
-cl <- makeCluster(n_cores)
-registerDoParallel(cl)
-
-cat("Using", n_cores, "cores\n\n")
+# 
+# cl <- makeCluster(n_cores)
+# registerDoParallel(cl)
+# 
+# cat("Using", n_cores, "cores\n\n")
 
 # ============================================================
 # SIMULATION LOOP (PARALLEL)
 # ============================================================
 
+# sim_results <- foreach(
+#   r         = 1:R,
+#   .packages = c("miceRanger", "mice", "MASS", "dplyr")
+# ) %dopar% {
+  
 sim_results <- foreach(
   r         = 1:R,
   .packages = c("miceRanger", "mice", "MASS", "dplyr")
-) %dopar% {
+) %do% {
+    
 
   set.seed(r * 100 + 123)
+  cat("Simulation", r, "of", R, "\n")
   iter_start <- Sys.time()
 
   # -----------------------------
@@ -210,7 +217,7 @@ sim_results <- foreach(
   } else {
     stop("missing_mech must be 'MAR' or 'MCAR'")
   }
-
+?miceRanger
   # NAs in derived terms ergeben sich automatisch aus NAs in Basisvariablen
   # Diese Spalten werden NICHT imputiert
   miss_df <- add_derived(miss_df)
@@ -232,14 +239,16 @@ sim_results <- foreach(
     method_start <- Sys.time()
 
     if (method == "rf_ranger") {
-
+      
       Imp_obj <- miceRanger::miceRanger(
         miss_imp,
-        m           = m_val,
-        maxit       = iterations, # bei jedem gleich
-        num.trees   = 200, # Standardmäßig mehr => wegen Performance reduziert
-        num.threads = 1,  # 1 Thread pro Worker (Parallelität auf Prozessebene)
-        verbose     = FALSE
+        m                    = m_val,
+        maxiter              = iterations,
+        num.trees            = 200,
+        num.threads          = 1,
+        valueSelector        = "meanMatch",   # PMM
+        meanMatchCandidates  = 5,             
+        verbose              = FALSE
       )
       imputed_list <- miceRanger::completeData(Imp_obj)
 
@@ -323,7 +332,7 @@ sim_results <- foreach(
   )
 }
 
-stopCluster(cl)
+#stopCluster(cl)
 
 # ============================================================
 # ERGEBNISSE ZUSAMMENFUEHREN
@@ -437,6 +446,6 @@ final_results <- list(
   date              = Sys.time()
 )
 
-saveRDS(final_results, "25_iterations_300sims_uff.rds")
+saveRDS(final_results, "Test_with_PMM_Rf.rds")
 
 cat("\nMulti-method simulation complete and saved.\n")

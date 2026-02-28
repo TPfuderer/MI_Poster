@@ -37,6 +37,73 @@ if (method_html == "rf_ranger") {
 }
 
 ############################################################
+# Merged Table (requires code below to be run!)
+############################################################
+# --- merge ML + Rubin diagnostics ---
+combined_table <- ml_summary %>%
+  dplyr::select(Method,
+                Mean_RMSE_missing,
+                Mean_R2_missing,
+                Mean_SE) %>%
+  left_join(
+    rubin_method_summary,
+    by = "Method"
+  ) %>%
+  arrange(Mean_RMSE_missing) %>%
+  mutate(
+    across(where(is.numeric), ~ round(.x, 3))
+  )
+
+library(gt)
+
+combined_gt <- combined_table %>%
+  gt() %>%
+  tab_header(
+    title = "MI Performance and Properness Summary",
+    subtitle = "Predictive Accuracy and Rubin Diagnostics"
+  ) %>%
+  cols_label(
+    Mean_RMSE_missing = "↓ RMSE",
+    Mean_R2_missing   = "↑ R²",
+    Mean_SE           = "Mean SE",
+    Avg_Lambda        = "λ",
+    Avg_FMI           = "FMI",
+    Avg_DF            = "DF",
+    Avg_B             = "Var (B)",
+    Avg_W             = "Var (W)",
+    Avg_T             = "Var (T)"
+  ) %>%
+  fmt_number(
+    columns = -Method,
+    decimals = 3
+  ) %>%
+  cols_align(
+    align = "center",
+    -Method
+  ) %>%
+  cols_align(
+    align = "left",
+    Method
+  ) %>%
+  tab_options(
+    table.font.size = px(18),
+    heading.title.font.size = px(22),
+    heading.subtitle.font.size = px(16)
+  )
+
+
+gtsave(
+  combined_gt,
+  "mi_combined_summary.pdf"
+)
+
+gtsave(
+  combined_gt,
+  "mi_combined_summary.png",
+  zoom = 3
+)
+
+############################################################
 # MISLEADING PERFORMANCE METRICS (ALL SIM RUNS)
 ############################################################
 
@@ -96,41 +163,41 @@ cat("\n================ MISLEADING METRICS =================\n")
 print(ml_summary)
 cat("=====================================================\n\n")
 
-library(gt)
-
-# Create gt object
-ml_gt <- ml_summary %>%
-  arrange(Mean_RMSE_missing) %>%
-  gt() %>%
-  tab_header(
-    title = "Predictive Performance on Missing Y"
-  ) %>%
-  cols_label(
-    Mean_RMSE_missing = "↓ RMSE",
-    Mean_R2_missing   = "↑ R²",
-    Mean_SE           = "Mean SE"
-  ) %>%
-  fmt_number(
-    columns = -Method,
-    decimals = 3
-  ) %>%
-  tab_options(
-    table.font.size = px(18),
-    heading.title.font.size = px(22)
-  )
-
-# Save vector PDF (best for LaTeX poster)
-gtsave(
-  ml_gt,
-  "predictive_performance.pdf"
-)
-
-# Save high-resolution PNG
-gtsave(
-  ml_gt,
-  "predictive_performance.png",
-  zoom = 3
-)
+# library(gt)
+# 
+# # Create gt object
+# ml_gt <- ml_summary %>%
+#   arrange(Mean_RMSE_missing) %>%
+#   gt() %>%
+#   tab_header(
+#     title = "Predictive Performance on Missing Y"
+#   ) %>%
+#   cols_label(
+#     Mean_RMSE_missing = "↓ RMSE",
+#     Mean_R2_missing   = "↑ R²",
+#     Mean_SE           = "Mean SE"
+#   ) %>%
+#   fmt_number(
+#     columns = -Method,
+#     decimals = 3
+#   ) %>%
+#   tab_options(
+#     table.font.size = px(18),
+#     heading.title.font.size = px(22)
+#   )
+# 
+# # Save vector PDF (best for LaTeX poster)
+# gtsave(
+#   ml_gt,
+#   "predictive_performance.pdf"
+# )
+# 
+# # Save high-resolution PNG
+# gtsave(
+#   ml_gt,
+#   "predictive_performance.png",
+#   zoom = 3
+# )
 
 
 ##########
